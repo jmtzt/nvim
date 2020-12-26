@@ -14,5 +14,15 @@ call plug#begin('~/.config/nvim/autoload/plugged')
     Plug 'scrooloose/NERDTree'
     " Auto pairs for '(' '[' '{'
     Plug 'jiangmiao/auto-pairs'
+    " Themes 
+    Plug 'joshdick/onedark.vim'
+    " Coc
+    Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
-call plug#end()
+    call plug#end()
+
+" Automatically install missing plugins on startup
+autocmd VimEnter *
+  \  if len(filter(values(g:plugs), '!isdirectory(v:val.dir)'))
+  \|   PlugInstall --sync | q
+  \| endif
