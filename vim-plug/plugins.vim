@@ -24,6 +24,14 @@ call plug#begin('~/.config/nvim/autoload/plugged')
     Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
     Plug 'junegunn/fzf.vim'
     Plug 'airblade/vim-rooter'
+    Plug 'mhinz/vim-startify'
+    Plug 'justinmk/vim-sneak'
+    Plug 'liuchengxu/vim-which-key'
+    Plug 'voldikss/vim-floaterm'
+    Plug 'alvan/vim-closetag'
+    Plug 'preservim/nerdcommenter'
+
+    
 
     call plug#end()
 
