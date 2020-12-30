@@ -23,5 +23,7 @@
   "explorer.keyMappings.global": {
     "<cr>": ["expandable?", "expand", "open"],
     "v": "open:vsplit"
-  }
+  },
+
+  "snippets.userSnippetsDirectory": "~/.config/nvim/snips"
 }

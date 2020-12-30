@@ -30,6 +30,8 @@ call plug#begin('~/.config/nvim/autoload/plugged')
     Plug 'alvan/vim-closetag'
     Plug 'preservim/nerdcommenter'
     Plug 'prettier/vim-prettier', { 'do': 'yarn install' }
+    Plug 'honza/vim-snippets'
+    Plug 'metakirby5/codi.vim'
 
     
 
