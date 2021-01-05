@@ -7,7 +7,6 @@ if empty(glob('~/.config/nvim/autoload/plug.vim'))
 endif
 
 call plug#begin('~/.config/nvim/autoload/plugged')
-
     " Better Syntax Support
     Plug 'sheerun/vim-polyglot'
     " File Explorer
@@ -32,8 +31,8 @@ call plug#begin('~/.config/nvim/autoload/plugged')
     Plug 'prettier/vim-prettier', { 'do': 'yarn install' }
     Plug 'honza/vim-snippets'
     Plug 'metakirby5/codi.vim'
-
-    
+	Plug 'Yggdroot/indentLine'
+	Plug 'vimwiki/vimwiki'
 
     call plug#end()
 

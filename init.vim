@@ -15,5 +15,8 @@ source $HOME/.config/nvim/plug-config/vim-closetag.vim
 source $HOME/.config/nvim/plug-config/nerdcommenter.vim
 source $HOME/.config/nvim/plug-config/vim-snippets.vim
 source $HOME/.config/nvim/plug-config/codi.vim
+source $HOME/.config/nvim/plug-config/vim-indent-guides.vim
+source $HOME/.config/nvim/plug-config/vim-wiki.vim
 
 autocmd VimEnter * Startify
+autocmd BufWritePost *.md silent !/home/jmtzt/scripts/buildNote.sh %:p
