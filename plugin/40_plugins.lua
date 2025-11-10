@@ -37,7 +37,6 @@ now_if_args(function()
 		hooks = {
 			post_checkout = function()
 				vim.cmd("TSUpdate")
-				vim.cmd("TSInstall python")
 			end,
 		},
 	})
@@ -299,6 +298,8 @@ later(function()
 	add("mason-org/mason-registry")
 	add("williamboman/mason-lspconfig.nvim")
 	add("WhoIsSethDaniel/mason-tool-installer.nvim")
+        add("stevearc/oil.nvim")
+        add("AlexandrosAlexiou/kotlin.nvim")
 
 	local ensure_installed = vim.tbl_keys({})
 	vim.list_extend(ensure_installed, {
@@ -323,6 +324,17 @@ later(function()
 			end,
 		},
 	})
+        require("kotlin").setup {
+            root_markers = {
+                "gradlew",
+                ".git",
+                "mvnw",
+                "settings.gradle",
+            },
+            jvm_args = {
+                "-Xmx24g",
+            },
+        }
 end)
 
 -- Harpoon ===================================================================
@@ -345,10 +357,10 @@ later(function()
 		harpoon.ui:toggle_quick_menu(harpoon:list())
 	end)
 
-	vim.keymap.set("n", "<C-h>", function()
+	vim.keymap.set("n", "<C-t>", function()
 		harpoon:list():select(1)
 	end)
-	vim.keymap.set("n", "<C-t>", function()
+	vim.keymap.set("n", "<C-y>", function()
 		harpoon:list():select(2)
 	end)
 	vim.keymap.set("n", "<C-n>", function()
