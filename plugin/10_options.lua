@@ -34,6 +34,7 @@ vim.o.list           = true       -- Show helpful text indicators
 vim.o.number         = true       -- Show line numbers
 vim.o.pumheight      = 10         -- Make popup menu smaller
 vim.o.updatetime = 150
+vim.o.relativenumber = true
 vim.o.ruler          = false      -- Don't show cursor coordinates
 vim.o.shortmess      = 'CFOSWaco' -- Disable some built-in completion messages
 vim.o.showmode       = false      -- Don't show mode in command line
