@@ -153,6 +153,7 @@ now_if_args(function()
 	vim.lsp.enable("pyright")
 	vim.lsp.enable("ruff")
 	vim.lsp.enable("ty")
+	vim.lsp.enable("jq")
 
 	vim.api.nvim_create_autocmd("LspAttach", {
 		group = vim.api.nvim_create_augroup("kickstart-lsp-attach", { clear = true }),
