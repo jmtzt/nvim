@@ -247,6 +247,7 @@ later(function()
 		formatters_by_ft = {
 			lua = { "stylua" },
 			python = { "ruff", "ruff_fix", "ruff_organize_imports", "ruff_format" },
+			json = { "jq" },
 		},
 		notify_on_error = false,
 		format_on_save = function(bufnr)
@@ -298,8 +299,8 @@ later(function()
 	add("mason-org/mason-registry")
 	add("williamboman/mason-lspconfig.nvim")
 	add("WhoIsSethDaniel/mason-tool-installer.nvim")
-        add("stevearc/oil.nvim")
-        add("AlexandrosAlexiou/kotlin.nvim")
+	add("stevearc/oil.nvim")
+	add("AlexandrosAlexiou/kotlin.nvim")
 
 	local ensure_installed = vim.tbl_keys({})
 	vim.list_extend(ensure_installed, {
@@ -324,17 +325,17 @@ later(function()
 			end,
 		},
 	})
-        require("kotlin").setup {
-            root_markers = {
-                "gradlew",
-                ".git",
-                "mvnw",
-                "settings.gradle",
-            },
-            jvm_args = {
-                "-Xmx24g",
-            },
-        }
+	require("kotlin").setup({
+		root_markers = {
+			"gradlew",
+			".git",
+			"mvnw",
+			"settings.gradle",
+		},
+		jvm_args = {
+			"-Xmx24g",
+		},
+	})
 end)
 
 -- Harpoon ===================================================================
