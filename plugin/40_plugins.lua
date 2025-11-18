@@ -153,7 +153,18 @@ now_if_args(function()
 	vim.lsp.enable("pyright")
 	vim.lsp.enable("ruff")
 	vim.lsp.enable("ty")
-	vim.lsp.enable("jq")
+
+	local capabilities = vim.lsp.protocol.make_client_capabilities()
+	capabilities.textDocument.completion.completionItem.snippetSupport = true
+
+	vim.lsp.config("jsonls", {
+		capabilities = capabilities,
+		init_options = {
+			provideFormatter = false,
+		},
+	})
+
+	vim.lsp.enable("jsonls")
 
 	vim.api.nvim_create_autocmd("LspAttach", {
 		group = vim.api.nvim_create_augroup("kickstart-lsp-attach", { clear = true }),
