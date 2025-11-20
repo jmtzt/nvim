@@ -482,6 +482,21 @@ later(function()
 	add("kdheepak/lazygit.nvim")
 end)
 
+-- Smart Splits ===================================================================
+later(function()
+        add('mrjones2014/smart-splits.nvim')
+        vim.keymap.set('n', '<C-h>', require('smart-splits').move_cursor_left, { desc = "Move cursor left" })
+        vim.keymap.set('n', '<C-j>', require('smart-splits').move_cursor_down, { desc = "Move cursor down" })
+        vim.keymap.set('n', '<C-k>', require('smart-splits').move_cursor_up, { desc = "Move cursor up" })
+        vim.keymap.set('n', '<C-l>', require('smart-splits').move_cursor_right, { desc = "Move cursor right" })
+        vim.keymap.set('n', '<C-\\>', require('smart-splits').move_cursor_previous, { desc = "Move cursor to previous window" })
+        -- swapping buffers between windows
+        vim.keymap.set('n', '<leader><leader>h', require('smart-splits').swap_buf_left, { desc = "Swap buffer left" })
+        vim.keymap.set('n', '<leader><leader>j', require('smart-splits').swap_buf_down, { desc = "Swap buffer down" })
+        vim.keymap.set('n', '<leader><leader>k', require('smart-splits').swap_buf_up, { desc = "Swap buffer up" })
+        vim.keymap.set('n', '<leader><leader>l', require('smart-splits').swap_buf_right, { desc = "Swap buffer right" })
+end)
+
 -- Beautiful, usable, well maintained color schemes outside of 'mini.nvim' and
 -- have full support of its highlight groups. Use if you don't like 'miniwinter'
 -- enabled in 'plugin/30_mini.lua' or other suggested 'mini.hues' based ones.

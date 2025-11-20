@@ -88,6 +88,12 @@ local f = function() vim.cmd('setlocal formatoptions-=c formatoptions-=o') end
 _G.Config.new_autocmd('FileType', nil, f, "Proper 'formatoptions'")
 
 -- There are other autocommands created by 'mini.basics'. See 'plugin/30_mini.lua'.
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = { "markdown", "txt" },
+  callback = function()
+    vim.opt_local.spell = false
+  end,
+})
 
 -- Diagnostics ================================================================
 
