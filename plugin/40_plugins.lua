@@ -1,33 +1,8 @@
--- ┌─────────────────────────┐
--- │ Plugins outside of MINI │
--- └─────────────────────────┘
---
--- This file contains installation and configuration of plugins outside of MINI.
--- They significantly improve user experience in a way not yet possible with MINI.
--- These are mostly plugins that provide programming language specific behavior.
---
--- Use this file to install and configure other such plugins.
 
--- Make concise helpers for installing/adding plugins in two stages
 local add, later = MiniDeps.add, MiniDeps.later
 local now_if_args = _G.Config.now_if_args
 
--- Tree-sitter ================================================================
 
--- Tree-sitter is a tool for fast incremental parsing. It converts text into
--- a hierarchical structure (called tree) that can be used to implement advanced
--- and/or more precise actions: syntax highlighting, textobjects, indent, etc.
---
--- Tree-sitter support is built into Neovim (see `:h treesitter`). However, it
--- requires two extra pieces that don't come with Neovim directly:
--- - Language parsers: programs that convert text into trees. Some are built-in
---   (like for Lua), 'nvim-treesitter' provides many others.
--- - Query files: definitions of how to extract information from trees in
---   a useful manner (see `:h treesitter-query`). 'nvim-treesitter' also provides
---   these, while 'nvim-treesitter-textobjects' provides the ones for Neovim
---   textobjects (see `:h text-objects`, `:h MiniAi.gen_spec.treesitter()`).
---
--- Add these plugins now if file (and not 'mini.starter') is shown after startup.
 now_if_args(function()
 	add({
 		source = "nvim-treesitter/nvim-treesitter",
@@ -84,21 +59,7 @@ now_if_args(function()
 	_G.Config.new_autocmd("FileType", filetypes, ts_start, "Start tree-sitter")
 end)
 
--- Language servers ===========================================================
 
--- Language Server Protocol (LSP) is a set of conventions that power creation of
--- language specific tools. It requires two parts:
--- - Server - program that performs language specific computations.
--- - Client - program that asks server for computations and shows results.
---
--- Here Neovim itself is a client (see `:h vim.lsp`). Language servers need to
--- be installed separately based on your OS, CLI tools, and preferences.
--- See note about 'mason.nvim' at the bottom of the file.
---
--- Neovim's team collects commonly used configurations for most language servers
--- inside 'neovim/nvim-lspconfig' plugin.
---
--- Add it now if file (and not 'mini.starter') is shown after startup.
 now_if_args(function()
 	add("neovim/nvim-lspconfig")
 
@@ -238,14 +199,7 @@ now_if_args(function()
 	})
 end)
 
--- Formatting =================================================================
 
--- Programs dedicated to text formatting (a.k.a. formatters) are very useful.
--- Neovim has built-in tools for text formatting (see `:h gq` and `:h 'formatprg'`).
--- They can be used to configure external programs, but it might become tedious.
---
--- The 'stevearc/conform.nvim' plugin is a good and maintained solution for easier
--- formatting setup.
 later(function()
 	add("stevearc/conform.nvim")
 
@@ -279,29 +233,12 @@ later(function()
 	})
 end)
 
--- Snippets ===================================================================
 
--- Although 'mini.snippets' provides functionality to manage snippet files, it
--- deliberately doesn't come with those.
---
--- The 'rafamadriz/friendly-snippets' is currently the largest collection of
--- snippet files. They are organized in 'snippets/' directory (mostly) per language.
--- 'mini.snippets' is designed to work with it as seamlessly as possible.
--- See `:h MiniSnippets.gen_loader.from_lang()`.
 later(function()
 	add("rafamadriz/friendly-snippets")
 end)
 
--- Honorable mentions =========================================================
 
--- 'mason-org/mason.nvim' (a.k.a. "Mason") is a great tool (package manager) for
--- installing external language servers, formatters, and linters. It provides
--- a unified interface for installing, updating, and deleting such programs.
---
--- The caveat is that these programs will be set up to be mostly used inside Neovim.
--- If you need them to work elsewhere, consider using other package managers.
---
--- You can use it like so:
 later(function()
 	add("mason-org/mason.nvim")
 	require("mason").setup()
@@ -353,7 +290,6 @@ later(function()
 	})
 end)
 
--- Harpoon ===================================================================
 later(function()
 	add("nvim-lua/plenary.nvim")
 	add({
@@ -387,7 +323,6 @@ later(function()
 	end)
 end)
 
--- Neotest ===================================================================
 later(function()
 	add("nvim-neotest/neotest")
 	add("nvim-neotest/nvim-nio")
@@ -424,7 +359,6 @@ later(function()
 	end
 end)
 
--- DAP ===================================================================
 later(function()
 	add("mfussenegger/nvim-dap")
 	add("theHamsta/nvim-dap-virtual-text")
@@ -466,7 +400,6 @@ later(function()
 	require("dapui").setup()
 	require("dap-python").setup("uv")
 end)
--- DAP UI ===================================================================
 later(function()
 	add("rcarriga/nvim-dap-ui")
 	vim.keymap.set("n", "<leader>du", function()
@@ -474,13 +407,11 @@ later(function()
 	end, { desc = "Toggle DAP UI" })
 end)
 
--- Copilot ===================================================================
 later(function()
 	add("github/copilot.vim")
 	vim.api.nvim_set_keymap("i", "<C-l>", 'copilot#Accept("<CR>")', { silent = true, expr = true })
 end)
 
--- Snacks ===================================================================
 MiniDeps.now(function()
 	add("folke/snacks.nvim")
 	require("snacks").setup({
@@ -683,7 +614,6 @@ MiniDeps.now(function()
 	vim.cmd([[au FileType snacks_picker_input lua vim.b.minicompletion_disable = true]])
 end)
 
--- UFO ===================================================================
 later(function()
 	add("kevinhwang91/promise-async")
 	add("kevinhwang91/nvim-ufo")
@@ -708,7 +638,6 @@ later(function()
 	--
 end)
 
--- Smart Splits ===================================================================
 later(function()
 	add("mrjones2014/smart-splits.nvim")
 	vim.keymap.set("n", "<C-h>", require("smart-splits").move_cursor_left, { desc = "Move cursor left" })
@@ -728,9 +657,6 @@ later(function()
 	vim.keymap.set("n", "<leader><leader>l", require("smart-splits").swap_buf_right, { desc = "Swap buffer right" })
 end)
 
--- Beautiful, usable, well maintained color schemes outside of 'mini.nvim' and
--- have full support of its highlight groups. Use if you don't like 'miniwinter'
--- enabled in 'plugin/30_mini.lua' or other suggested 'mini.hues' based ones.
 MiniDeps.now(function()
 	-- Install only those that you need
 	add("rose-pine/neovim")
