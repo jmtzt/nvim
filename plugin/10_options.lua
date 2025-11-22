@@ -22,6 +22,8 @@ vim.g.copilot_no_tab_map = true
 vim.g.copilot_filetypes = { markdown = true, yaml = true }
 vim.g.have_nerd_font = true
 vim.opt.guicursor = ''
+vim.g.loaded_netrw = 1
+vim.g.loaded_netrwPlugin = 1
 -- UI and Visuals
 -- -- Use a block cursor in all modes (disable fancy GUI cursor styles)
 

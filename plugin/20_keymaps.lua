@@ -33,7 +33,7 @@ vim.keymap.set("n", "[b", ":bp<CR>", { desc = "Previous buffer" })
 vim.keymap.set("n", "]b", ":bn<CR>", { desc = "Next buffer" })
 
 -- Open file explorer (Ex mode / netrw)
-vim.keymap.set("n", "<leader>st", vim.cmd.Ex, { desc = "Open file explorer" })
+-- vim.keymap.set("n", "<leader>st", vim.cmd.Ex, { desc = "Open file explorer" })
 
 -- Join lines but keep the cursor in place
 vim.keymap.set("n", "J", "mzJ`z", { desc = "Join lines without moving cursor" })
@@ -171,7 +171,7 @@ nmap_leader('bW', '<Cmd>lua MiniBufremove.wipeout(0, true)<CR>', 'Wipeout!')
 local edit_plugin_file = function(filename)
   return string.format('<Cmd>edit %s/plugin/%s<CR>', vim.fn.stdpath('config'), filename)
 end
-local explore_at_file = '<Cmd>lua MiniFiles.open(vim.api.nvim_buf_get_name(0))<CR>'
+-- local explore_at_file = '<Cmd>lua MiniFiles.open(vim.api.nvim_buf_get_name(0))<CR>'
 local explore_quickfix = function()
   for _, win_id in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
     if vim.fn.getwininfo(win_id)[1].quickfix == 1 then return vim.cmd('cclose') end
@@ -179,8 +179,8 @@ local explore_quickfix = function()
   vim.cmd('copen')
 end
 
-nmap_leader('ed', '<Cmd>lua MiniFiles.open()<CR>',          'Directory')
-nmap_leader('ef', explore_at_file,                          'File directory')
+nmap_leader('ed', '<Cmd>Oil<CR>',          'Directory')
+-- nmap_leader('ef', explore_at_file,                          'File directory')
 nmap_leader('ei', '<Cmd>edit $MYVIMRC<CR>',                 'init.lua')
 nmap_leader('ek', edit_plugin_file('20_keymaps.lua'),       'Keymaps config')
 nmap_leader('em', edit_plugin_file('30_mini.lua'),          'MINI config')
@@ -193,61 +193,6 @@ nmap_leader('qq', explore_quickfix, 'Quickfix')
 nmap_leader('qj', '<cmd>cnext<CR>', 'Next Quickfix item')
 nmap_leader('qk', '<cmd>cprev<CR>', 'Prev Quickfix item')
 
--- s is for 'Fuzzy Find'. Common usage:
--- - `<Leader>sf` - find files; for best performance requires `ripgrep`
--- - `<Leader>sg` - find inside files; requires `ripgrep`
--- - `<Leader>sh` - find help tag
--- - `<Leader>sr` - resume latest picker
--- - `<Leader>sv` - all visited paths; requires 'mini.visits'
---
--- All these use 'mini.pick'. See `:h MiniPick-overview` for an overview.
-local pick_added_hunks_buf = '<Cmd>Pick git_hunks path="%" scope="staged"<CR>'
-
-nmap_leader('s/', '<Cmd>Pick history scope="/"<CR>',            '"/" history')
-nmap_leader('s:', '<Cmd>Pick history scope=":"<CR>',            '":" history')
-nmap_leader('sa', '<Cmd>Pick git_hunks scope="staged"<CR>',     'Added hunks (all)')
-nmap_leader('sA', pick_added_hunks_buf,                         'Added hunks (buf)')
-nmap_leader('sb', '<Cmd>Pick buffers<CR>',                      'Buffers')
-nmap_leader('sc', '<Cmd>Pick git_commits<CR>',                  'Commits (all)')
-nmap_leader('sC', '<Cmd>Pick git_commits path="%"<CR>',         'Commits (buf)')
-nmap_leader('sd', '<Cmd>Pick diagnostic scope="all"<CR>',       'Diagnostic workspace')
-nmap_leader('sD', '<Cmd>Pick diagnostic scope="current"<CR>',   'Diagnostic buffer')
-nmap_leader('sf', '<Cmd>Pick files<CR>',                        'Files')
-nmap_leader('sg', '<Cmd>Pick grep_live<CR>',                    'Grep live')
-nmap_leader('sG', '<Cmd>Pick grep pattern="<cword>"<CR>',       'Grep current word')
-nmap_leader('sh', '<Cmd>Pick help<CR>',                         'Help tags')
-nmap_leader('sH', '<Cmd>Pick hl_groups<CR>',                    'Highlight groups')
-nmap_leader('sl', '<Cmd>Pick buf_lines scope="all"<CR>',        'Lines (all)')
-nmap_leader('sL', '<Cmd>Pick buf_lines scope="current"<CR>',    'Lines (buf)')
-nmap_leader('sm', '<Cmd>Pick git_hunks<CR>',                    'Modified hunks (all)')
-nmap_leader('sM', '<Cmd>Pick git_hunks path="%"<CR>',           'Modified hunks (buf)')
-nmap_leader('sr', '<Cmd>Pick resume<CR>',                       'Resume')
-nmap_leader('sR', '<Cmd>Pick lsp scope="references"<CR>',       'References (LSP)')
-nmap_leader('ss', '<Cmd>Pick lsp scope="workspace_symbol"<CR>', 'Symbols workspace')
-nmap_leader('sS', '<Cmd>Pick lsp scope="document_symbol"<CR>',  'Symbols document')
-nmap_leader('sv', '<Cmd>Pick visit_paths cwd=""<CR>',           'Visit paths (all)')
-nmap_leader('sV', '<Cmd>Pick visit_paths<CR>',                  'Visit paths (cwd)')
-
--- g is for 'Git'. Common usage:
--- - `<Leader>gs` - show information at cursor
--- - `<Leader>go` - toggle 'mini.diff' overlay to show in-buffer unstaged changes
--- - `<Leader>gd` - show unstaged changes as a patch in separate tabpage
--- - `<Leader>gL` - show Git log of current file
-local git_log_cmd = [[Git log --pretty=format:\%h\ \%as\ │\ \%s --topo-order]]
-local git_log_buf_cmd = git_log_cmd .. ' --follow -- %'
-
-nmap_leader('ga', '<Cmd>Git diff --cached<CR>',             'Added diff')
-nmap_leader('gA', '<Cmd>Git diff --cached -- %<CR>',        'Added diff buffer')
-nmap_leader('gc', '<Cmd>Git commit<CR>',                    'Commit')
-nmap_leader('gC', '<Cmd>Git commit --amend<CR>',            'Commit amend')
-nmap_leader('gd', '<Cmd>Git diff<CR>',                      'Diff')
-nmap_leader('gD', '<Cmd>Git diff -- %<CR>',                 'Diff buffer')
-nmap_leader('gl', '<Cmd>' .. git_log_cmd .. '<CR>',         'Log')
-nmap_leader('gL', '<Cmd>' .. git_log_buf_cmd .. '<CR>',     'Log buffer')
-nmap_leader('go', '<Cmd>lua MiniDiff.toggle_overlay()<CR>', 'Toggle overlay')
-nmap_leader('gs', '<Cmd>lua MiniGit.show_at_cursor()<CR>',  'Show at cursor')
-
-xmap_leader('gs', '<Cmd>lua MiniGit.show_at_cursor()<CR>', 'Show at selection')
 
 -- l is for 'Language'. Common usage:
 -- - `<Leader>ld` - show more diagnostic details in a floating window

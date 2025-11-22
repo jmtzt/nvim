@@ -145,24 +145,9 @@ end)
 -- See also:
 -- - `:h MiniStarter-example-config` - non-default config examples
 -- - `:h MiniStarter-lifecycle` - how to work with Starter buffer
-now(function()
-	require("mini.starter").setup()
-end)
-
--- Statusline. Sets `:h 'statusline'` to show more info in a line below window.
--- Example usage:
--- - Left most section indicates current mode (text + highlighting).
--- - Second from left section shows "developer info": Git, diff, diagnostics, LSP.
--- - Center section shows the name of displayed buffer.
--- - Second to right section shows more buffer info.
--- - Right most section shows current cursor coordinates and search results.
---
--- See also:
--- - `:h MiniStatusline-example-content` - example of default content. Use it to
---   configure a custom statusline by setting `config.content.active` function.
-now(function()
-	require("mini.statusline").setup()
-end)
+-- now(function()
+-- 	require("mini.starter").setup()
+-- end)
 
 -- Tabline. Sets `:h 'tabline'` to show all listed buffers in a line at the top.
 -- Buffers are ordered as they were created. Navigate with `[b` and `]b`.
@@ -294,7 +279,6 @@ later(function()
       -- This is defined in 'plugin/20_keymaps.lua' with Leader group descriptions
       Config.leader_group_clues,
       miniclue.gen_clues.builtin_completion(),
-      --miniclue.gen_clues.g(),
       miniclue.gen_clues.marks(),
       miniclue.gen_clues.registers(),
       -- This creates a submode for window resize mappings. Try the following:
@@ -316,8 +300,8 @@ later(function()
       { mode = 'x', keys = '[' },
       { mode = 'x', keys = ']' },
       { mode = 'i', keys = '<C-x>' },    -- Built-in completion
-      { mode = 'n', keys = 'g' },        -- `g` key
-      { mode = 'x', keys = 'g' },
+      -- { mode = 'n', keys = 'g' },        -- `g` key (disabled to allow gr for LSP references)
+      -- { mode = 'x', keys = 'g' },
       { mode = 'n', keys = "'" },        -- Marks
       { mode = 'n', keys = '`' },
       { mode = 'x', keys = "'" },
@@ -474,21 +458,21 @@ end)
 -- - `:h MiniFiles-navigation` - more details about how to navigate
 -- - `:h MiniFiles-manipulation` - more details about how to manipulate
 -- - `:h MiniFiles-examples` - examples of common setups
-later(function()
-	-- Enable directory/file preview
-	require("mini.files").setup({ windows = { preview = true } })
-
-	-- Add common bookmarks for every explorer. Example usage inside explorer:
-	-- - `'c` to navigate into your config directory
-	-- - `g?` to see available bookmarks
-	local add_marks = function()
-		MiniFiles.set_bookmark("c", vim.fn.stdpath("config"), { desc = "Config" })
-		local minideps_plugins = vim.fn.stdpath("data") .. "/site/pack/deps/opt"
-		MiniFiles.set_bookmark("p", minideps_plugins, { desc = "Plugins" })
-		MiniFiles.set_bookmark("w", vim.fn.getcwd, { desc = "Working directory" })
-	end
-	_G.Config.new_autocmd("User", "MiniFilesExplorerOpen", add_marks, "Add bookmarks")
-end)
+-- later(function()
+-- 	-- Enable directory/file preview
+-- 	require("mini.files").setup({ windows = { preview = true } })
+--
+-- 	-- Add common bookmarks for every explorer. Example usage inside explorer:
+-- 	-- - `'c` to navigate into your config directory
+-- 	-- - `g?` to see available bookmarks
+-- 	local add_marks = function()
+-- 		MiniFiles.set_bookmark("c", vim.fn.stdpath("config"), { desc = "Config" })
+-- 		local minideps_plugins = vim.fn.stdpath("data") .. "/site/pack/deps/opt"
+-- 		MiniFiles.set_bookmark("p", minideps_plugins, { desc = "Plugins" })
+-- 		MiniFiles.set_bookmark("w", vim.fn.getcwd, { desc = "Working directory" })
+-- 	end
+-- 	_G.Config.new_autocmd("User", "MiniFilesExplorerOpen", add_marks, "Add bookmarks")
+-- end)
 
 -- Git integration for more straightforward Git actions based on Neovim's state.
 -- It is not meant as a fully featured Git client, only to provide helpers that
@@ -653,7 +637,10 @@ end)
 -- - `:h MiniOperators-mappings` - overview of how mappings are created
 -- - `:h MiniOperators-overview` - overview of present operators
 later(function()
-	require("mini.operators").setup()
+	require("mini.operators").setup({
+		-- Change replace operator from gr to gR to free gr for LSP references
+		replace = { prefix = 'gR' },
+	})
 
 	-- Create mappings for swapping adjacent arguments. Notes:
 	-- - Relies on `a` argument textobject from 'mini.ai'.
@@ -707,9 +694,9 @@ end)
 -- - `:h MiniPick.builtin` and `:h MiniExtra.pickers` - available pickers;
 --   Execute one either with Lua function, `:Pick <picker-name>` command, or
 --   one of `<Leader>f` mappings defined in 'plugin/20_keymaps.lua'
-later(function()
-	require("mini.pick").setup()
-end)
+-- later(function()
+-- 	require("mini.pick").setup()
+-- end)
 
 -- Manage and expand snippets (templates for a frequently used text).
 -- Typical workflow is to type snippet's (configurable) prefix and expand it
