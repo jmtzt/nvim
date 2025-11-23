@@ -253,7 +253,11 @@ later(function()
 	add("WhoIsSethDaniel/mason-tool-installer.nvim")
 	add("stevearc/oil.nvim")
 	vim.keymap.set("n", "<leader>st", "<CMD>Oil<CR>", { desc = "Open file explorer" })
-	require("oil").setup()
+	require("oil").setup({
+		view_options = {
+			show_hidden = true,
+		},
+	})
 
 	add("AlexandrosAlexiou/kotlin.nvim")
 
