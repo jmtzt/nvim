@@ -1,7 +1,5 @@
-
 local add, later = MiniDeps.add, MiniDeps.later
 local now_if_args = _G.Config.now_if_args
-
 
 now_if_args(function()
 	add({
@@ -37,6 +35,7 @@ now_if_args(function()
 		"query",
 		"vim",
 		"vimdoc",
+		"zig",
 	}
 	local isnt_installed = function(lang)
 		return #vim.api.nvim_get_runtime_file("parser/" .. lang .. ".*", false) == 0
@@ -58,7 +57,6 @@ now_if_args(function()
 	end
 	_G.Config.new_autocmd("FileType", filetypes, ts_start, "Start tree-sitter")
 end)
-
 
 now_if_args(function()
 	add("neovim/nvim-lspconfig")
@@ -110,6 +108,14 @@ now_if_args(function()
 		},
 	})
 
+	vim.lsp.config("zls", {
+		cmd = { "zls" },
+		filetypes = { "zig", "zir" },
+		single_file_support = true,
+		enable_build_on_save = true,
+	})
+
+	vim.lsp.enable("zls")
 	vim.lsp.enable("luals")
 	vim.lsp.enable("pyright")
 	vim.lsp.enable("ruff")
@@ -199,7 +205,6 @@ now_if_args(function()
 	})
 end)
 
-
 later(function()
 	add("stevearc/conform.nvim")
 
@@ -233,11 +238,9 @@ later(function()
 	})
 end)
 
-
 later(function()
 	add("rafamadriz/friendly-snippets")
 end)
-
 
 later(function()
 	add("mason-org/mason.nvim")
@@ -655,6 +658,26 @@ later(function()
 	vim.keymap.set("n", "<leader><leader>j", require("smart-splits").swap_buf_down, { desc = "Swap buffer down" })
 	vim.keymap.set("n", "<leader><leader>k", require("smart-splits").swap_buf_up, { desc = "Swap buffer up" })
 	vim.keymap.set("n", "<leader><leader>l", require("smart-splits").swap_buf_right, { desc = "Swap buffer right" })
+end)
+
+later(function()
+	add({
+		source = "harrisoncramer/gitlab.nvim",
+		depends = {
+			"MunifTanjim/nui.nvim",
+			"nvim-lua/plenary.nvim",
+			"sindrets/diffview.nvim",
+			"stevearc/dressing.nvim",
+			"nvim-tree/nvim-web-devicons",
+		},
+		hooks = {
+			post_checkout = function()
+				require("gitlab.server").build(true) -- Builds the Go binary
+			end,
+		},
+	})
+
+	require("gitlab").setup()
 end)
 
 MiniDeps.now(function()
