@@ -684,6 +684,18 @@ later(function()
 	require("gitlab").setup()
 end)
 
+later(function()
+	add({
+		source = "esmuellert/vscode-diff.nvim",
+		depends = {
+			"MunifTanjim/nui.nvim",
+		},
+	})
+
+	require("vscode-diff").setup()
+	vim.keymap.set("n", "<leader>gv", ":CodeDiff<CR>", { desc = "Open DiffView" })
+end)
+
 MiniDeps.now(function()
 	-- Install only those that you need
 	add("rose-pine/neovim")

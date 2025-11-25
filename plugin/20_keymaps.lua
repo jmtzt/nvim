@@ -12,6 +12,11 @@ vim.keymap.set({ "n", "x" }, "s", "<Nop>")
 nmap("[p", '<Cmd>exe "put! " . v:register<CR>', "Paste Above")
 nmap("]p", '<Cmd>exe "put "  . v:register<CR>', "Paste Below")
 
+vim.keymap.set("n", "<leader>gm", ":lua require('gitlab').choose_merge_request()<CR>", { desc = "Choose GitLab MR" })
+vim.keymap.set("n", "<leader>gr", ":lua require('gitlab').review()<CR>", { desc = "Open GitLab review" })
+
+vim.keymap.set("n", "[b", ":bp<CR>", { desc = "Previous buffer" })
+
 vim.keymap.set("n", "[b", ":bp<CR>", { desc = "Previous buffer" })
 
 vim.keymap.set("n", "]b", ":bn<CR>", { desc = "Next buffer" })
