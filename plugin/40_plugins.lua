@@ -699,7 +699,8 @@ end)
 MiniDeps.now(function()
 	-- Install only those that you need
 	add("rose-pine/neovim")
+	add("rebelot/kanagawa.nvim")
 
 	-- Enable only one
-	vim.cmd("color rose-pine")
+	vim.cmd("color kanagawa-wave")
 end)
