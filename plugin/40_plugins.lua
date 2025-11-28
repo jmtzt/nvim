@@ -236,6 +236,11 @@ later(function()
 			end
 		end,
 	})
+	local conform = require("conform")
+
+	conform.formatters.jq = {
+		args = { "." }, -- equivalent to `jq .`
+	}
 end)
 
 later(function()
