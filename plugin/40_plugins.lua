@@ -708,5 +708,5 @@ MiniDeps.now(function()
 	add("Mofiqul/dracula.nvim")
 
 	-- Enable only one
-	vim.cmd("color dracula")
+	vim.cmd("color rose-pine-main")
 end)
