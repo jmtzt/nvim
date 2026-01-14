@@ -691,13 +691,13 @@ end)
 
 later(function()
 	add({
-		source = "esmuellert/vscode-diff.nvim",
+		source = "esmuellert/codediff.nvim",
 		depends = {
 			"MunifTanjim/nui.nvim",
 		},
 	})
 
-	require("vscode-diff").setup()
+	require("codediff").setup()
 	vim.keymap.set("n", "<leader>gv", ":CodeDiff<CR>", { desc = "Open DiffView" })
 end)
 
