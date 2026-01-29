@@ -325,3 +325,7 @@ end)
 later(function()
 	require("mini.visits").setup()
 end)
+
+later(function()
+	require("mini.pick").setup()
+end)
