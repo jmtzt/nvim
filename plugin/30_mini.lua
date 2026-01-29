@@ -51,17 +51,16 @@ now_if_args(function()
 
 	-- Synchronize terminal emulator background with Neovim's background to remove
 	-- possibly different color padding around Neovim instance
-	-- DISABLED FOR DEBUGGING: MiniMisc.setup_termbg_sync()
+	MiniMisc.setup_termbg_sync()
 end)
 
 now(function()
 	require("mini.notify").setup()
 end)
 
--- DISABLED FOR DEBUGGING
--- now(function()
--- 	require("mini.sessions").setup()
--- end)
+now(function()
+	require("mini.sessions").setup()
+end)
 
 later(function()
 	require("mini.extra").setup()
@@ -323,6 +322,7 @@ later(function()
 	require("mini.trailspace").setup()
 end)
 
-later(function()
-	require("mini.visits").setup()
-end)
+-- DISABLED: Causes 6.5s hang on SSH VMs due to synchronous file I/O
+-- later(function()
+-- 	require("mini.visits").setup()
+-- end)
