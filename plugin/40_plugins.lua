@@ -461,6 +461,8 @@ later(function()
 	vim.api.nvim_set_keymap("i", "<C-l>", 'copilot#Accept("<CR>")', { silent = true, expr = true })
 end)
 
+-- TEMPORARILY DISABLED FOR DEBUGGING
+if false then
 MiniDeps.now(function()
 	add("folke/snacks.nvim")
 	require("snacks").setup({
@@ -649,6 +651,7 @@ MiniDeps.now(function()
 
 	vim.cmd([[au FileType snacks_picker_input lua vim.b.minicompletion_disable = true]])
 end)
+end -- End TEMPORARILY DISABLED
 
 later(function()
 	add("kevinhwang91/promise-async")
