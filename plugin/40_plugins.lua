@@ -115,26 +115,60 @@ now_if_args(function()
 		enable_build_on_save = true,
 	})
 
-	-- Defer LSP enabling to avoid blocking startup
-	vim.schedule(function()
-		vim.lsp.enable("zls")
-		vim.lsp.enable("luals")
-		vim.lsp.enable("pyright")
-		vim.lsp.enable("ruff")
-		vim.lsp.enable("ty")
+	-- Configure jsonls with custom capabilities
+	local capabilities = vim.lsp.protocol.make_client_capabilities()
+	capabilities.textDocument.completion.completionItem.snippetSupport = true
 
-		local capabilities = vim.lsp.protocol.make_client_capabilities()
-		capabilities.textDocument.completion.completionItem.snippetSupport = true
+	vim.lsp.config("jsonls", {
+		capabilities = capabilities,
+		init_options = {
+			provideFormatter = false,
+		},
+	})
 
-		vim.lsp.config("jsonls", {
-			capabilities = capabilities,
-			init_options = {
-				provideFormatter = false,
-			},
-		})
+	-- Lazy load LSPs per filetype - only loads when you open a file of that type
+	local lsp_enabled = {} -- Track which LSPs have been enabled
 
-		vim.lsp.enable("jsonls")
-	end)
+	local function enable_lsp_once(lsp_name)
+		if not lsp_enabled[lsp_name] then
+			vim.lsp.enable(lsp_name)
+			lsp_enabled[lsp_name] = true
+		end
+	end
+
+	-- Lua files
+	vim.api.nvim_create_autocmd("FileType", {
+		pattern = "lua",
+		callback = function()
+			enable_lsp_once("luals")
+		end,
+	})
+
+	-- Python files
+	vim.api.nvim_create_autocmd("FileType", {
+		pattern = "python",
+		callback = function()
+			enable_lsp_once("pyright")
+			enable_lsp_once("ruff")
+			enable_lsp_once("ty")
+		end,
+	})
+
+	-- Zig files
+	vim.api.nvim_create_autocmd("FileType", {
+		pattern = { "zig", "zir" },
+		callback = function()
+			enable_lsp_once("zls")
+		end,
+	})
+
+	-- JSON files
+	vim.api.nvim_create_autocmd("FileType", {
+		pattern = "json",
+		callback = function()
+			enable_lsp_once("jsonls")
+		end,
+	})
 
 	vim.api.nvim_create_autocmd("LspAttach", {
 		group = vim.api.nvim_create_augroup("kickstart-lsp-attach", { clear = true }),
