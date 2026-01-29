@@ -115,23 +115,26 @@ now_if_args(function()
 		enable_build_on_save = true,
 	})
 
-	vim.lsp.enable("zls")
-	vim.lsp.enable("luals")
-	vim.lsp.enable("pyright")
-	vim.lsp.enable("ruff")
-	vim.lsp.enable("ty")
+	-- Defer LSP enabling to avoid blocking startup
+	vim.schedule(function()
+		vim.lsp.enable("zls")
+		vim.lsp.enable("luals")
+		vim.lsp.enable("pyright")
+		vim.lsp.enable("ruff")
+		vim.lsp.enable("ty")
 
-	local capabilities = vim.lsp.protocol.make_client_capabilities()
-	capabilities.textDocument.completion.completionItem.snippetSupport = true
+		local capabilities = vim.lsp.protocol.make_client_capabilities()
+		capabilities.textDocument.completion.completionItem.snippetSupport = true
 
-	vim.lsp.config("jsonls", {
-		capabilities = capabilities,
-		init_options = {
-			provideFormatter = false,
-		},
-	})
+		vim.lsp.config("jsonls", {
+			capabilities = capabilities,
+			init_options = {
+				provideFormatter = false,
+			},
+		})
 
-	vim.lsp.enable("jsonls")
+		vim.lsp.enable("jsonls")
+	end)
 
 	vim.api.nvim_create_autocmd("LspAttach", {
 		group = vim.api.nvim_create_augroup("kickstart-lsp-attach", { clear = true }),
@@ -434,15 +437,10 @@ MiniDeps.now(function()
 		dashboard = {
 			enabled = true,
 			sections = {
-				{
-					section = "terminal",
-					cmd = "cbonsai",
-					hl = "header",
-					padding = 1,
-					indent = 8,
-					height = 20,
-				},
+				{ section = "header" },
 				{ section = "keys", gap = 1, padding = 1 },
+				{ section = "recent_files", gap = 1, padding = 1 },
+				{ section = "projects", gap = 1, padding = 1 },
 			},
 		},
 	})
