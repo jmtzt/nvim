@@ -464,20 +464,11 @@ end)
 MiniDeps.now(function()
 	add("folke/snacks.nvim")
 	require("snacks").setup({
-		bigfile = { enabled = true },
+		bigfile = { enabled = false }, -- Disabled for debugging
 		picker = { enabled = true },
 		lazygit = { enabled = true },
 		lazy = { enabled = false },
-		dashboard = {
-			enabled = true,
-			sections = {
-				{ section = "header" },
-				{ section = "keys", gap = 1, padding = 1 },
-				-- Temporarily disabled for debugging
-				-- { section = "recent_files", gap = 1, padding = 1 },
-				-- { section = "projects", gap = 1, padding = 1 },
-			},
-		},
+		dashboard = { enabled = false },
 	})
 
 	-- Define keys after setup
