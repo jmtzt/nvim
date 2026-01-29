@@ -51,16 +51,17 @@ now_if_args(function()
 
 	-- Synchronize terminal emulator background with Neovim's background to remove
 	-- possibly different color padding around Neovim instance
-	MiniMisc.setup_termbg_sync()
+	-- DISABLED FOR DEBUGGING: MiniMisc.setup_termbg_sync()
 end)
 
 now(function()
 	require("mini.notify").setup()
 end)
 
-now(function()
-	require("mini.sessions").setup()
-end)
+-- DISABLED FOR DEBUGGING
+-- now(function()
+-- 	require("mini.sessions").setup()
+-- end)
 
 later(function()
 	require("mini.extra").setup()
