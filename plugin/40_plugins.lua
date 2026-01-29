@@ -456,10 +456,11 @@ later(function()
 	end, { desc = "Toggle DAP UI" })
 end)
 
-later(function()
-	add("github/copilot.vim")
-	vim.api.nvim_set_keymap("i", "<C-l>", 'copilot#Accept("<CR>")', { silent = true, expr = true })
-end)
+-- DISABLED: Testing if Copilot network connection causes 10s hang on SSH
+-- later(function()
+-- 	add("github/copilot.vim")
+-- 	vim.api.nvim_set_keymap("i", "<C-l>", 'copilot#Accept("<CR>")', { silent = true, expr = true })
+-- end)
 
 MiniDeps.now(function()
 	add("folke/snacks.nvim")
