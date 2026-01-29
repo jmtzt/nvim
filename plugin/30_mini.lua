@@ -322,7 +322,6 @@ later(function()
 	require("mini.trailspace").setup()
 end)
 
--- DISABLED: Causes 6.5s hang on SSH VMs due to synchronous file I/O
--- later(function()
--- 	require("mini.visits").setup()
--- end)
+later(function()
+	require("mini.visits").setup()
+end)
