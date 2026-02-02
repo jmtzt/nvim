@@ -734,6 +734,53 @@ later(function()
 	vim.keymap.set("n", "<leader>gv", ":CodeDiff<CR>", { desc = "Open DiffView" })
 end)
 
+later(function()
+	add("Maxteabag/sqlit.nvim")
+
+	vim.keymap.set("n", "<leader>D", function()
+		require("sqlit").open()
+	end, { desc = "DB" })
+end)
+-- later(function()
+-- 	add("hrsh7th/nvim-cmp")
+-- 	-- add("ThePrimeagen/99")
+-- 	add({
+-- 		source = "https://github.com/Soyuz0/99",
+-- 		checkout = "add-python-support",
+-- 	})
+--
+-- 	local _99 = require("99")
+-- 	local cwd = vim.uv.cwd()
+-- 	local basename = vim.fs.basename(cwd)
+--
+-- 	_99.setup({
+-- 		logger = {
+-- 			level = _99.DEBUG,
+-- 			path = "/tmp/" .. basename .. ".99.debug",
+-- 			print_on_error = true,
+-- 		},
+-- 		completion = {
+-- 			-- cursor_rules = "<custom path to cursor rules>"
+-- 			custom_rules = { "scratch/custom_rules/" },
+-- 			source = "cmp",
+-- 		},
+-- 		md_files = { "AGENT.md" },
+-- 	})
+--
+-- 	vim.keymap.set("n", "<leader>9f", function()
+-- 		_99.fill_in_function()
+-- 	end)
+-- 	vim.keymap.set("v", "<leader>9v", function()
+-- 		_99.visual()
+-- 	end)
+-- 	vim.keymap.set("v", "<leader>9s", function()
+-- 		_99.stop_all_requests()
+-- 	end)
+-- 	vim.keymap.set("n", "<leader>9fd", function()
+-- 		_99.fill_in_function()
+-- 	end)
+-- end)
+
 MiniDeps.now(function()
 	-- Install only those that you need
 	add("rose-pine/neovim")
