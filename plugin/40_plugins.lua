@@ -764,10 +764,10 @@ later(function()
 		-- model = "openai/gpt-5.2-codex",
 		completion = {
 			-- cursor_rules = "<custom path to cursor rules>"
-			custom_rules = { "scratch/custom_rules/" },
+			custom_rules = { "~/.config/99_rules/" },
 			source = "cmp",
 		},
-		md_files = { "AGENT.md" },
+		md_files = { "~/.config/AGENT.md" },
 	})
 
 	vim.keymap.set("n", "<leader>cf", function()
