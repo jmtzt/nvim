@@ -15,7 +15,7 @@ nmap("]p", '<Cmd>exe "put "  . v:register<CR>', "Paste Below")
 vim.keymap.set("n", "<leader>gm", ":lua require('gitlab').choose_merge_request()<CR>", { desc = "Choose GitLab MR" })
 vim.keymap.set("n", "<leader>gr", ":lua require('gitlab').review()<CR>", { desc = "Open GitLab review" })
 
-vim.keymap.set("n", "<leader>r", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])
+vim.keymap.set("n", "<leader>r", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]], { desc = "Rename" })
 
 vim.keymap.set("n", "[b", ":bp<CR>", { desc = "Previous buffer" })
 
@@ -94,6 +94,7 @@ _G.Config.leader_group_clues = {
 	{ mode = "n", keys = "<Leader>e", desc = "+Explore/Edit" },
 	{ mode = "n", keys = "<Leader>s", desc = "+Find" },
 	{ mode = "n", keys = "<Leader>g", desc = "+Git" },
+	{ mode = "n", keys = "<Leader>c", desc = "+99" },
 	{ mode = "n", keys = "<Leader>l", desc = "+Language" },
 	{ mode = "n", keys = "<Leader>m", desc = "+Map" },
 	{ mode = "n", keys = "<Leader>o", desc = "+Other" },
