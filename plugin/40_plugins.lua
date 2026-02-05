@@ -299,6 +299,9 @@ later(function()
 		view_options = {
 			show_hidden = true,
 		},
+		keymaps = {
+			["<C-h>"] = false,
+		},
 	})
 
 	add("AlexandrosAlexiou/kotlin.nvim")
@@ -760,8 +763,9 @@ later(function()
 			path = "/tmp/" .. basename .. ".99.debug",
 			print_on_error = true,
 		},
-		model = "github-copilot/claude-sonnet-4",
+		-- model = "github-copilot/claude-sonnet-4",
 		-- model = "openai/gpt-5.2-codex",
+		model = "anthropic/claude-sonnet-4-5",
 		completion = {
 			-- cursor_rules = "<custom path to cursor rules>"
 			custom_rules = { "~/.config/99_rules/" },
