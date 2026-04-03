@@ -100,6 +100,7 @@ _G.Config.leader_group_clues = {
 	{ mode = "n", keys = "<Leader>o", desc = "+Other" },
 	{ mode = "n", keys = "<Leader>f", desc = "+Session" },
 	{ mode = "n", keys = "<Leader>t", desc = "+Todo" },
+	{ mode = "n", keys = "<Leader>T", desc = "+Terminal" },
 	{ mode = "n", keys = "<Leader>v", desc = "+Visits" },
 	{ mode = "n", keys = "<Leader>d", desc = "+DAP" },
 	{ mode = "n", keys = "<Leader>n", desc = "+Neotest" },
@@ -181,8 +182,8 @@ nmap_leader("fn", "<Cmd>lua " .. session_new .. "<CR>", "New")
 nmap_leader("fr", '<Cmd>lua MiniSessions.select("read")<CR>', "Read")
 nmap_leader("fw", "<Cmd>lua MiniSessions.write()<CR>", "Write current")
 
-nmap_leader("tT", "<Cmd>horizontal term<CR>", "Terminal (horizontal)")
-nmap_leader("tt", "<Cmd>vertical term<CR>", "Terminal (vertical)")
+nmap_leader("TT", "<Cmd>horizontal term<CR>", "Terminal (horizontal)")
+nmap_leader("Tt", "<Cmd>vertical term<CR>", "Terminal (vertical)")
 
 local make_pick_core = function(cwd, desc)
 	return function()

@@ -1,22 +1,40 @@
-local add, later = MiniDeps.add, MiniDeps.later
+local now, add, later = Config.now, Config.pack_add, Config.later
 local now_if_args = _G.Config.now_if_args
+local valid_log_levels = {}
+
+for _, level in pairs(vim.log.levels) do
+	valid_log_levels[level] = true
+end
+
+Config.new_autocmd("PackChanged", nil, function(ev)
+	local name = ev.data.spec.name
+	local kind = ev.data.kind
+
+	if name == "nvim-treesitter" and (kind == "install" or kind == "update") then
+		if not ev.data.active then
+			vim.cmd.packadd("nvim-treesitter")
+		end
+		vim.cmd("TSUpdate")
+	end
+
+	if name == "gitlab.nvim" and (kind == "install" or kind == "update") then
+		if not ev.data.active then
+			vim.cmd.packadd("gitlab.nvim")
+		end
+		require("gitlab.server").build(true)
+	end
+end, "Run vim.pack post-change hooks")
 
 now_if_args(function()
 	add({
-		source = "nvim-treesitter/nvim-treesitter",
+		src = "nvim-treesitter/nvim-treesitter",
 		-- Use `main` branch since `master` branch is frozen, yet still default
-		checkout = "main",
-		-- Update tree-sitter parser after plugin is updated
-		hooks = {
-			post_checkout = function()
-				vim.cmd("TSUpdate")
-			end,
-		},
+		version = "main",
 	})
 	add({
-		source = "nvim-treesitter/nvim-treesitter-textobjects",
+		src = "nvim-treesitter/nvim-treesitter-textobjects",
 		-- Same logic as for 'nvim-treesitter'
-		checkout = "main",
+		version = "main",
 	})
 
 	local languages = {
@@ -319,13 +337,9 @@ later(function()
 		automatic_installation = false,
 		handlers = {
 			function(server_name)
-				local server = servers[server_name] or {}
-				-- This handles overriding only values explicitly passed
-				-- by the server configuration above. Useful when disabling
-				-- certain features of an LSP (for example, turning off formatting for ts_ls)
-				server.capabilities = vim.tbl_deep_extend("force", {}, capabilities, server.capabilities or {})
-				--require('lspconfig')[server_name].setup(server)
-				vim.lsp.config(server_name, server)
+				vim.lsp.config(server_name, {
+					capabilities = vim.deepcopy(capabilities),
+				})
 			end,
 		},
 	})
@@ -345,8 +359,8 @@ end)
 later(function()
 	add("nvim-lua/plenary.nvim")
 	add({
-		source = "theprimeagen/harpoon",
-		checkout = "harpoon2",
+		src = "theprimeagen/harpoon",
+		version = "harpoon2",
 	})
 	local harpoon = require("harpoon")
 
@@ -383,10 +397,44 @@ later(function()
 	add("nvim-treesitter/nvim-treesitter")
 	add("nvim-neotest/neotest-python")
 
+	local project_root = function(path)
+		return vim.fs.root(path, {
+			"pyproject.toml",
+			"pytest.ini",
+			"tox.ini",
+			"setup.cfg",
+			"setup.py",
+			".git",
+		})
+	end
+
+	local python_cmd = function()
+		local root = project_root(vim.fn.expand("%:p")) or vim.fn.getcwd()
+		local candidates = {
+			root .. "/.venv/bin/python",
+			root .. "/venv/bin/python",
+		}
+
+		for _, candidate in ipairs(candidates) do
+			if vim.fn.executable(candidate) == 1 then
+				return candidate
+			end
+		end
+
+		return "python3"
+	end
+
 	require("neotest").setup({
 		log_level = "WARN",
 		adapters = {
-			require("neotest-python"),
+			require("neotest-python")({
+				python = python_cmd,
+				pytest_discover_instances = true,
+				is_test_file = function(file_path)
+					local name = vim.fs.basename(file_path)
+					return name:match("^test_.*%.py$") ~= nil or name:match(".*_test%.py$") ~= nil
+				end,
+			}),
 		},
 	})
 
@@ -402,7 +450,7 @@ later(function()
 		if type(level) ~= "number" then
 			level = vim.log.levels.INFO
 		end
-		if not (level_names and level_names[level]) then
+		if not valid_log_levels[level] then
 			level = vim.log.levels.INFO
 		end
 
@@ -413,6 +461,7 @@ end)
 
 later(function()
 	add("mfussenegger/nvim-dap")
+	add("nvim-neotest/nvim-nio")
 	add("theHamsta/nvim-dap-virtual-text")
 	add("mfussenegger/nvim-dap-python")
 	add("jay-babu/mason-nvim-dap.nvim")
@@ -453,6 +502,7 @@ later(function()
 	require("dap-python").setup("uv")
 end)
 later(function()
+	add("nvim-neotest/nvim-nio")
 	add("rcarriga/nvim-dap-ui")
 	vim.keymap.set("n", "<leader>du", function()
 		require("dapui").toggle()
@@ -464,7 +514,7 @@ later(function()
 	vim.api.nvim_set_keymap("i", "<C-l>", 'copilot#Accept("<CR>")', { silent = true, expr = true })
 end)
 
-MiniDeps.now(function()
+now(function()
 	add("folke/snacks.nvim")
 	require("snacks").setup({
 		bigfile = { enabled = true },
@@ -707,19 +757,19 @@ end)
 
 later(function()
 	add({
-		source = "harrisoncramer/gitlab.nvim",
-		depends = {
-			"MunifTanjim/nui.nvim",
-			"nvim-lua/plenary.nvim",
-			"sindrets/diffview.nvim",
-			"stevearc/dressing.nvim",
-			"nvim-tree/nvim-web-devicons",
-		},
-		hooks = {
-			post_checkout = function()
-				require("gitlab.server").build(true) -- Builds the Go binary
-			end,
-		},
+		src = "MunifTanjim/nui.nvim",
+	})
+	add({
+		src = "nvim-lua/plenary.nvim",
+	})
+	add({
+		src = "sindrets/diffview.nvim",
+	})
+	add({
+		src = "stevearc/dressing.nvim",
+	})
+	add({
+		src = "harrisoncramer/gitlab.nvim",
 	})
 
 	require("gitlab").setup()
@@ -727,10 +777,10 @@ end)
 
 later(function()
 	add({
-		source = "esmuellert/codediff.nvim",
-		depends = {
-			"MunifTanjim/nui.nvim",
-		},
+		src = "MunifTanjim/nui.nvim",
+	})
+	add({
+		src = "esmuellert/codediff.nvim",
 	})
 
 	require("codediff").setup()
@@ -749,8 +799,8 @@ later(function()
 	add("hrsh7th/nvim-cmp")
 	-- add("ThePrimeagen/99")
 	add({
-		source = "https://github.com/Soyuz0/99",
-		checkout = "add-python-support",
+		src = "https://github.com/Soyuz0/99",
+		version = "add-python-support",
 	})
 
 	local _99 = require("99")
@@ -788,11 +838,14 @@ later(function()
 	end, { desc = "Stop fill in function" })
 end)
 
-MiniDeps.now(function()
+now(function()
 	-- Install only those that you need
+	add("nvim-mini/mini.cmdline")
+	require("mini.cmdline").setup()
 	add("rose-pine/neovim")
 	add("rebelot/kanagawa.nvim")
 	add("Mofiqul/dracula.nvim")
+	require("vim._core.ui2").enable()
 
 	-- Enable only one
 	vim.cmd("color rose-pine-main")
